@@ -69,15 +69,14 @@
 .login-form {
   min-width: 350px;
   min-height: 350px;
-  max-height: 400px;
   width: 75%;
-  background-color: white;
+  height: 70vh;
+  background-color: rgb(255, 255, 255);
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  height: 65vh;
   align-self: center;
-  flex: 9;
+  flex: 11;
 }
 
 /* Title */
@@ -93,7 +92,8 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem; /* enough space below */
+  position: relative;
 }
 
 .form-group label {
@@ -167,3 +167,19 @@
     align-self: center;
     justify-self: flex-end;
 }
+
+.error-text {
+  color: #ff4d4f;
+  font-size: 0.75rem;
+  min-height: 1rem;
+  height: 1rem;          /* Fix height to prevent stretching */
+  margin-top: 0.25rem;
+  visibility: visible;
+  transition: opacity 0.2s ease;
+}
+
+.error-text.hidden {
+  visibility: hidden;
+}
+
+
