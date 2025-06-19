@@ -182,4 +182,138 @@
   visibility: hidden;
 }
 
+/* Brand Header */
+.brand-header {
+  width: 100vw;
+  background: #c93939c8;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 2.1rem;
+  letter-spacing: 1px;
+  text-align: center;
+  padding: 1.1rem 0 0.7rem 0;
+  margin: 0;
+  box-shadow: 0 2px 8px rgba(201,57,57,0.08);
+  z-index: 10;
+}
+
+@media (max-width: 900px) {
+  .login-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+  .login-image, .login-content {
+    width: 100vw;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+  }
+  .login-image {
+    order: 2;
+    padding: 2rem 0 1rem 0;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .login-content {
+    order: 1;
+    width: 100vw;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+    padding: 2rem 0 1rem 0;
+  }
+  .login-form {
+    min-width: 0;
+    width: 90vw;
+    max-width: 400px;
+    height: auto;
+    min-height: 320px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+  }
+  .login-image img {
+    width: 60%;
+    min-width: 120px;
+    max-width: 220px;
+  }
+  .login-image h1 {
+    font-size: 2rem;
+    margin-left: 0;
+    padding: 0.4rem 0.7rem;
+  }
+  .login-quote h2 {
+    font-size: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 0.7rem;
+  }
+  .brand-header {
+    font-size: 1.5rem;
+    padding: 0.8rem 0 0.5rem 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .login-container {
+    flex-direction: column;
+    padding: 0;
+    min-height: 100vh;
+  }
+  .login-image, .login-content {
+    width: 100vw;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+    padding: 0.5rem 0;
+  }
+  .login-image {
+    padding: 1rem 0 0.5rem 0;
+  }
+  .login-image img {
+    width: 80%;
+    min-width: 80px;
+    max-width: 160px;
+  }
+  .login-image h1 {
+    font-size: 1.3rem;
+    padding: 0.3rem 0.5rem;
+  }
+  .login-quote h2 {
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0 0.5rem;
+  }
+  .login-form {
+    min-width: 0;
+    width: 96vw;
+    max-width: 99vw;
+    padding: 1rem 0.5rem;
+    font-size: 0.95rem;
+  }
+  .login-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  .form-group label {
+    font-size: 0.95rem;
+  }
+  .form-group input {
+    font-size: 0.95rem;
+    padding: 0.45rem 0.6rem;
+  }
+  .login-button {
+    font-size: 0.95rem;
+    padding: 0.5rem;
+  }
+  .register-link, .pass-section, .login-footer {
+    font-size: 0.85rem;
+  }
+  .brand-header {
+    font-size: 1.1rem;
+    padding: 0.6rem 0 0.4rem 0;
+  }
+}
+
 
