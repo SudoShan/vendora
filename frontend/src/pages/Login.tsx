@@ -92,7 +92,7 @@ function Login() {
           </form>
         </div>
 
-        <div className="flex-1"></div>
+        <div className="flex-2"></div>
         <div className="login-footer">
           <p>
             Are you seller? <a href="/seller/login">Login here</a> © 2023 Vendora. All rights reserved.
