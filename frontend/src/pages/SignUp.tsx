@@ -4,6 +4,8 @@ import { useState } from 'react';
 
 function SignUp() {
   const [step, setStep] = useState<'input' | 'otp' | 'password'>('input');
+  const [fullName, setFullName] = useState('');
+  const [isSeller, setIsSeller] = useState(false);
   const [contact, setContact] = useState('');
   //const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState('');
@@ -78,6 +80,22 @@ function SignUp() {
 
           {step === 'input' && (
             <>
+              <label>Full Name</label>
+              <input
+                type="text"
+                placeholder="Enter your full name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+              />
+              <label style={{ display: "flex", alignItems: "center", gap: 8, margin: "8px 0" }}>
+                <input
+                  type="checkbox"
+                  checked={isSeller}
+                  onChange={(e) => setIsSeller(e.target.checked)}
+                  style={{ marginRight: 6 }}
+                />
+                I am a seller
+              </label>
               <label>Enter Email or Phone</label>
               <input
                 type="text"
