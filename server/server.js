@@ -28,8 +28,12 @@ app.use('/api/auth', authRoutes)
 const productRoutes = require('./routes/product')
 app.use('/api/products', productRoutes)
 
+const cartRoutes = require('./routes/cart-routes')
+app.use('/api/cart', cartRoutes)
+
+
 const imageRoutes = require('./routes/image-routes')
-app.use('/api/image', imageRoutes)
+app.use('/api/images', imageRoutes)
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)

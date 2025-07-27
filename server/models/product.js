@@ -36,16 +36,15 @@ const productSchema = new mongoose.Schema({
         type: [String],
         default: []
     },
+    quantity: {
+        type: Number,
+        required: true,
+        min: 0
+    },
     images: [
         {
-            url: {
-                type: String,
-                required: true
-            },
-            altText: {
-                type: String,
-                trim: true
-            }
+            type: String,
+            required: true
         }
     ],
     user: {

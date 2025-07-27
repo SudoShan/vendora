@@ -1,8 +1,10 @@
 const {User, userSchema} = require('../models/user');
 const RefreshToken = require('../models/refresh-token');
 const InvalidToken = require('../models/invalid-tokens');
+const transporter = require('../config/nodemailer');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 
 const registerUser = async (req, res) => {
     try{
@@ -26,7 +28,13 @@ const registerUser = async (req, res) => {
 
         // Save the user to the database
         await newUser.save();
-
+        // Send a welcome email
+        await transporter.sendMail({
+            to: email,
+            subject: 'Welcome to Vendora',
+            text: `Hello ${fullName},\n\nThank you for registering on Vendora! We're excited to have you on board.\n\nBest regards,\nThe Vendora Team`
+        });
+        
         return res.status(201).json({ message: 'User registered successfully' });
     }
     catch (error) {
@@ -54,7 +62,7 @@ const loginUser = async (req, res) => {
         accessToken = jwt.sign(
             { userId: user._id, email: user.email, role: user.role },
             process.env.JWT_ACC_SECRET,
-            { expiresIn: '2h' }
+            { expiresIn: '3d' }
         );
         refreshToken = jwt.sign(
             { userId: user._id, email: user.email, role: user.role },
@@ -85,13 +93,13 @@ const loginUser = async (req, res) => {
 
 const logoutUser = async (req, res) => {
     try {
-        await RefreshToken.deleteMany({ refreshToken: req.body.refreshToken });
 
         await InvalidToken.insertOne({
             accessToken: req.accessToken.value,
             userId: req.user.id,
             expirationTime: req.accessToken.exp
         })
+
 
         return res.status(204).send()
     } catch (error) {

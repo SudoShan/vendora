@@ -4,7 +4,7 @@ const path = require('path');
 // Configure multer for file uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // Directory where files will be stored
+        cb(null, 'imageUploads/'); // Directory where files will be stored
     },
     filename: (req, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -21,8 +21,12 @@ const checkFileFilter = (req, file, cb) => {
     cb(null, true);
 }
 
-module.exports = multer({
+const upload = multer({
     storage: storage,
     fileFilter: checkFileFilter,
     limits: { fileSize: 5 * 1024 * 1024 } // Limit file size to 5MB
 }); // 'image' is the field name in the form
+
+module.exports = {
+    uploadImageMiddleware: upload.single('image'), // Middleware to handle single image upload
+};
