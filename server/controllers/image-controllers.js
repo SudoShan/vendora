@@ -19,7 +19,6 @@ const uploadImage = async (req, res) => {
             uploadedBy: req.user.id
         });
         await image.save();
-        console.log('Image uploaded successfully:', image);
         // Delete the local file after uploading to Cloudinary
         fs.unlink(req.file.path, (err) => {
             if (err) {

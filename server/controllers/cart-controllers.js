@@ -15,33 +15,28 @@ const addToCart = async (req, res) => {
             add = [{ product: productId, quantity }];
 
         if (!cart) {
-        // Step 2: No cart exists → create one
-        cart = new Cart({
-            user: req.user.id,
-            products: add
-        });
+
+            cart = new Cart({
+                user: req.user.id,
+                products: add
+            });
 
         } else {
-        // Step 3: Check if product already exists (any size)
-        const existingIndex = cart.products.findIndex(
-            (item) => item.product.toString() === productId
-        );
+            const existingIndex = cart.products.findIndex(
+                (item) => item.product.toString() === productId
+            );
 
-        if (existingIndex > -1) {
-            // Step 4: Overwrite quantity and size
-            cart.products[existingIndex].quantity = quantity;
-            if (typeof size === "string" && size.length > 0) {
-                cart.products[existingIndex].size = size;
+            if (existingIndex > -1) {
+                cart.products[existingIndex].quantity = quantity;
+                if (typeof size === "string" && size.length > 0) {
+                    cart.products[existingIndex].size = size;
+                } else {
+                    delete cart.products[existingIndex].size;
+                }
             } else {
-                // Remove size if not provided
-                delete cart.products[existingIndex].size;
+                cart.products.push({ product: productId, quantity, ...(size ? { size } : {}) });
             }
-        } else {
-            // Step 5: Add new product entry
-            cart.products.push({ product: productId, quantity, ...(size ? { size } : {}) });
         }
-        }
-        // Step 6: Save the cart
         await cart.save();
         res.status(200).json({ message: 'Item added to cart', cart });
         

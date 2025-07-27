@@ -1,11 +1,8 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "./product-card";
-import { fetchProductsbyFilter } from "../../store/product-slice";
 
 const ProductCategoryDisp = () => {
-  const dispatch = useDispatch();
   const { products, isLoading, error } = useSelector((state) => state.products);
   const [searchParams] = useSearchParams();
 
