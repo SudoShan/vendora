@@ -1,7 +1,16 @@
 import HotDealsScroll from "../../components/user/hot-deals";
 import Hero from "../../components/user/hero";
 import Header from "../../layouts/User/header";
-const deals = () => {
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getCartItems } from "../../store/cart-slice";
+
+const Deals = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+      dispatch(getCartItems());
+  }, [dispatch]);
+
   return (
     <>
         <Header />
@@ -11,4 +20,4 @@ const deals = () => {
   );
 }
 
-export default deals;
+export default Deals;

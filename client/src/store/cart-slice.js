@@ -15,7 +15,6 @@ export const getCartItems = createAsyncThunk(
         Authorization: `Bearer ${localStorage.getItem('accessToken') || ''}`,
       },
     });
-    console.log("Cart items fetched:", response.data);
     return response.data;
   }
 );
@@ -40,12 +39,30 @@ export const addToCart = createAsyncThunk(
         }
       );
     } catch (error) {
-      console.error("Error adding product to cart:", error);
       return thunkAPI.rejectWithValue(error.message);
     }
-
     console.log("Product added to cart:", product);
     return product;
+  }
+);
+
+export const removeFromCart = createAsyncThunk(
+  'cart/removeFromCart',
+  async (productId, thunkAPI) => {
+    try {
+      await axiosInstance.post(
+        '/cart/remove',
+        { productId },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken') || ''}`,
+          },
+        }
+      );
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+    return productId;
   }
 );
 
@@ -69,16 +86,31 @@ const cartSlice = createSlice({
         console.log("Adding product to cart...");
       })
       .addCase(addToCart.fulfilled, (state, action) => {
-        const product = action.payload.cart;
-        const existingProduct = state.items.find(item => item.id === product.id);
+        const product = action.payload;
+        const existingProduct = state.items.find(item => item.product === product.id);
 
         if (existingProduct) {
           existingProduct.quantity = product.quantity;
         } else {
-          state.items.push(product);
+          state.items.push({
+            product: product.id,
+            quantity: product.quantity,
+            size: product.size,
+          });
         }
-
-        console.log("Product added to local cart state:", product);
+      })
+      .addCase(addToCart.rejected, (state, action) => {
+        console.error("Failed to add product to cart:", action.error.message);
+      })
+      .addCase(removeFromCart.pending, () => {
+        console.log("Removing product from cart...");
+      })
+      .addCase(removeFromCart.fulfilled, (state, action) => {
+        const productId = action.payload;
+        state.items = state.items.filter(item => item.product !== productId);
+      })
+      .addCase(removeFromCart.rejected, (state, action) => {
+        console.error("Failed to remove product from cart:", action.error.message);
       });
   }
 });

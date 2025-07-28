@@ -1,26 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCartItems } from "../../store/cart-slice";
+import { addToCart, removeFromCart, getCartItems } from "../../store/cart-slice";
 import { fetchProductById } from "../../store/product-slice";
 import { unwrapResult } from "@reduxjs/toolkit";
 
-const CartContents = ({ onQtyChange = () => {}, onRemove = () => {} }) => {
+
+const CartContents = () => {
   const dispatch = useDispatch();
+  useEffect(() => {
+      dispatch(getCartItems());
+  }, [dispatch]);
+
   const cartItems = useSelector((state) => state.cart.items);
 
   const [cartProducts, setCartProducts] = useState([]);
 
-  useEffect(() => {
-    dispatch(getCartItems());
-  }, [dispatch]);
+  const onRemove = (productId) => {
+    dispatch(removeFromCart(productId));
+  };
+
+  const onQtyChange = (productId, newQty) => {
+    if (newQty <= 0) {
+      dispatch(removeFromCart(productId));
+    } else {
+      dispatch(addToCart({ id: productId, quantity: newQty }));
+    }
+  };
+
 
   useEffect(() => {
     async function fetchDetails() {
-      console.log("Array.isArray(cartItems):", Array.isArray(cartItems));
       if (Array.isArray(cartItems) && cartItems.length > 0) {
         const results = [];
         for (const item of cartItems) {
           try {
+            console.log("Fetching product for cart item:", item);
             const productId = item.product;
             const action = await dispatch(fetchProductById(productId));
             const prod = unwrapResult(action);
@@ -28,7 +42,6 @@ const CartContents = ({ onQtyChange = () => {}, onRemove = () => {} }) => {
               ...prod,
               quantity: item.quantity,
               size: item.size,
-              id: item.id,
             });
           } catch (err) {
             console.error("Error fetching product details:", err);
@@ -54,7 +67,7 @@ const CartContents = ({ onQtyChange = () => {}, onRemove = () => {} }) => {
     <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
       {cartProducts.map((prod) => (
         <div
-          key={prod.id || prod._id}
+          key={prod._id}
           style={{
             display: "flex",
             alignItems: "center",
@@ -124,7 +137,7 @@ const CartContents = ({ onQtyChange = () => {}, onRemove = () => {} }) => {
                     outline: "none",
                     boxShadow: "none",
                   }}
-                  onClick={() => onQtyChange(prod.id, prod.quantity - 1)}
+                  onClick={() => onQtyChange(prod._id, prod.quantity - 1)}
                   disabled={prod.quantity <= 1}
                   tabIndex={-1}
                 >
@@ -158,7 +171,7 @@ const CartContents = ({ onQtyChange = () => {}, onRemove = () => {} }) => {
                     outline: "none",
                     boxShadow: "none",
                   }}
-                  onClick={() => onQtyChange(prod.id, prod.quantity + 1)}
+                  onClick={() => onQtyChange(prod._id, prod.quantity + 1)}
                   tabIndex={-1}
                 >
                   +
@@ -180,7 +193,7 @@ const CartContents = ({ onQtyChange = () => {}, onRemove = () => {} }) => {
                 outline: "none",
                 boxShadow: "none",
               }}
-              onClick={() => onRemove(prod.id)}
+              onClick={() => onRemove(prod._id)}
               tabIndex={-1}
             >
               Remove

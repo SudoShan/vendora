@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { FiShoppingCart } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, removeFromCart } from "../../store/cart-slice";
 
 const ProductCard = ({
   id,
@@ -10,12 +12,31 @@ const ProductCard = ({
   image,
   price,
   discount,
-  inCart = false,
-  onCartClick,
 }) => {
-  const cartColor = inCart ? "#c93939c8" : "#222";
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+  const [inCart, setInCart] = useState(
+    cartItems.some((item) => item.product === id)
+  );
+
+
+  // Set color: black if in cart, red if not
+  const cartColor = inCart ? "#c93939c8": "#222";
+
   const hasDiscount = discount > 0;
   const originalPrice = hasDiscount ? Math.round(price / (1 - discount / 100)) : price;
+
+  // Toggle cart status and dispatch action
+  const handleCartClick = (e) => {
+    e.preventDefault();
+    if (inCart) {
+      setInCart(false);
+      dispatch(removeFromCart(id));
+    } else {
+      setInCart(true);
+      dispatch(addToCart({ id, quantity: 1 }));
+    }
+  };
 
   return (
     <div
@@ -34,7 +55,7 @@ const ProductCard = ({
       {/* Cart Icon */}
       <button
         type="button"
-        onClick={() => onCartClick && onCartClick(id)}
+        onClick={handleCartClick}
         style={{
           position: "absolute",
           top: 12,
@@ -131,5 +152,4 @@ const ProductCard = ({
     </div>
   );
 };
-
 export default ProductCard;

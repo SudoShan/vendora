@@ -43,7 +43,8 @@ const ProductPage = () => {
         })
       );
       toast.success("Product added to cart");
-    } catch {
+    } catch(err) {
+      console.log(err);
       toast.error("Failed to add to cart");
     } finally {
       setAdding(false);
