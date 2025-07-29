@@ -92,7 +92,7 @@ const Cart = ({ onClose }) => {
           marginBottom: 50,
         }}
         tabIndex={-1}
-        onClick={() => navigate("/checkout")}
+        onClick={() => navigate("/shop/checkout")}
       >
         Checkout
       </button>

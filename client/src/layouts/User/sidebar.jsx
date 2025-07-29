@@ -128,7 +128,7 @@ function SideBar() {
   }, [products, filter.category]);
 
   return (
-    <div style={{ padding: 24, width: "100%", boxSizing: "border-box" }}>
+    <div style={{ padding: 24, width: "100%", boxSizing: "border-box", overflowX: "hidden" }}>
       {/* Category */}
       <div style={{ marginBottom: 24 }}>
         <div style={{ fontWeight: 600, marginBottom: 8, fontSize: 15, color: "#222" }}>Category</div>
@@ -205,7 +205,7 @@ function SideBar() {
       {/* Price */}
       <div>
         <div style={{ fontWeight: 600, marginBottom: 8, fontSize: 15, color: "#222" }}>Price</div>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 4 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
           <input
             type="number"
             min={priceRange.min}
@@ -213,8 +213,8 @@ function SideBar() {
             value={filter.minPrice}
             onChange={(e) => handleMinPriceChange(Math.max(priceRange.min, Math.min(Number(e.target.value))))}
             style={{
-              width: 70,
-              padding: "6px 8px",
+              width: 60,
+              padding: "6px 6px",
               borderRadius: 6,
               border: "1px solid #ddd",
               fontSize: 14,
@@ -232,8 +232,8 @@ function SideBar() {
             value={filter.maxPrice}
             onChange={(e) => handleMaxPriceChange(Math.min(priceRange.max, Math.max(Number(e.target.value))))}
             style={{
-              width: 70,
-              padding: "6px 8px",
+              width: 60,
+              padding: "6px 6px",
               borderRadius: 6,
               border: "1px solid #ddd",
               fontSize: 14,

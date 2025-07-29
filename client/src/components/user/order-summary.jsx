@@ -1,22 +1,57 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { fetchProductById } from "../../store/product-slice";
 
-function OrderSummary({ products }) {
-  const items = products;
+function OrderSummary() {
+  const cartItems = useSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
+  const total = (itemsArray) => {
+    return itemsArray.reduce(
+      (sum, prod) => sum + prod.price * prod.quantity,
+      0
+    );
+  };
 
-  const total = items.reduce(
-    (sum, prod) => sum + prod.price * prod.quantity,
-    0
-  );
+  const [cartProducts, setCartProducts] = useState([]);
+
+  useEffect(() => {
+    async function fetchDetails() {
+      if (Array.isArray(cartItems) && cartItems.length > 0) {
+        const results = [];
+        for (const item of cartItems) {
+          try {
+            console.log("Fetching product for cart item:", item);
+            const productId = item.product;
+            const action = await dispatch(fetchProductById(productId));
+            const prod = unwrapResult(action);
+            results.push({
+              ...prod,
+              quantity: item.quantity,
+              size: item.size,
+            });
+          } catch (err) {
+            console.error("Error fetching product details:", err);
+          }
+        }
+        setCartProducts(results);
+      } else {
+        setCartProducts([]);
+      }
+    }
+    fetchDetails();
+  }, [cartItems, dispatch]);
+
 
   return (
     <div
       style={{
-        background: "#f7f7f9",
+        background: "#fff", // changed to white
         borderRadius: 12,
         padding: 18,
-        width: "min(340px, 95vw)",
+        width: "min(400px, 95vw)",
         minWidth: 180,
-        maxWidth: 360,
+        maxWidth: 520,
         boxSizing: "border-box",
         margin: "0 auto",
         display: "flex",
@@ -24,7 +59,7 @@ function OrderSummary({ products }) {
         gap: 16,
       }}
     >
-      <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 4 }}>
+      <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 4, color: "#000" }}>
         Order Summary
       </div>
 
@@ -39,9 +74,9 @@ function OrderSummary({ products }) {
           gap: 14,
         }}
       >
-        {items.map((prod) => (
+        {cartProducts.map((prod) => (
           <div
-            key={prod.id}
+            key={prod._id}
             style={{
               display: "flex",
               alignItems: "center",
@@ -51,7 +86,7 @@ function OrderSummary({ products }) {
             }}
           >
             <img
-              src={prod.image}
+              src={prod.images[0]}
               alt={prod.name}
               style={{
                 width: 38,
@@ -63,9 +98,9 @@ function OrderSummary({ products }) {
               }}
             />
             <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-              <div style={{ fontWeight: 600, fontSize: 13 }}>{prod.name}</div>
+              <div style={{ fontWeight: 600, fontSize: 13, color: "#000" }}>{prod.name}</div>
               {prod.size && (
-                <div style={{ fontSize: 11, color: "#888", marginTop: 1 }}>
+                <div style={{ fontSize: 11, color: "#444", marginTop: 1 }}>
                   Size {prod.size}
                 </div>
               )}
@@ -77,13 +112,13 @@ function OrderSummary({ products }) {
                   gap: 8,
                 }}
               >
-                <span style={{ fontWeight: 700, fontSize: 13 }}>
+                <span style={{ fontWeight: 700, fontSize: 13, color: "#000" }}>
                   ₹{prod.price}
                 </span>
                 <span
                   style={{
                     fontSize: 11,
-                    color: "#888",
+                    color: "#444",
                     marginLeft: 6,
                   }}
                 >
@@ -105,13 +140,13 @@ function OrderSummary({ products }) {
           alignItems: "center",
           fontWeight: 700,
           fontSize: 15,
+          color: "#000"
         }}
       >
         <span>Total</span>
-        <span>₹{total}</span>
+        <span>₹{total(cartProducts)}</span>
       </div>
     </div>
   );
 }
-
 export default OrderSummary;

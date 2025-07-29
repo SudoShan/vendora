@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { loginUser } from '../store/auth-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useCheckAuth } from '../utils/check-auth';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -16,12 +17,14 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  useCheckAuth(isAuthenticated);
+
   useEffect(() => {
     if (isAuthenticated && user) {
       if (user.role === 'seller') {
         navigate('/seller/product/new');
       } else {
-        navigate('/shop/explore');
+        navigate('/shop/deals');
       }
     } 
   }, [isAuthenticated, user, navigate]);

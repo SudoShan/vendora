@@ -14,9 +14,9 @@ connectDB();
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors({
-  origin: 'http://localhost:5173', // Update with your frontend URL
+  origin: 'http://localhost:5173', 
   credentials: true, // Allow cookies to be sent
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Cache-Control', 'Expires', 'Pragma']
 }))
 app.use(cookieParser())
@@ -34,6 +34,9 @@ app.use('/api/cart', cartRoutes)
 
 const imageRoutes = require('./routes/image-routes')
 app.use('/api/images', imageRoutes)
+
+const addressRoutes = require('./routes/address-routes')
+app.use('/api/addresses', addressRoutes)
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)

@@ -2,9 +2,8 @@ import './SignUp.css';
 import SignIn from '../assets/signin.svg';
 import axiosInstance from '../utils/api';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 function SignUp() {
   const [step, setStep] = useState('input');
@@ -15,18 +14,7 @@ function SignUp() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const user = useSelector((state) => state.auth.user);
-  
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      if (user.role === 'seller') {
-        navigate('/seller/product/new');
-      } else {
-        navigate('/shop/explore');
-      }
-    }
-  }, [isAuthenticated, user, navigate]);
+
 
   const validateContact = (input) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

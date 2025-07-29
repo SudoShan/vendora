@@ -12,11 +12,11 @@ const Deals = () => {
   }, [dispatch]);
 
   return (
-    <>
+    <div style={{ overflowX: "hidden" }}>
         <Header />
         <Hero />
         <HotDealsScroll />
-    </>
+    </div>
   );
 }
 

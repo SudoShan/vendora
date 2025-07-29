@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import SearchBar from "../../components/common/search-bar";
 import Cart from "../../components/user/cart";
-import { FiShoppingCart, FiPackage } from "react-icons/fi";
+import { FiShoppingCart, FiPackage, FiLogOut } from "react-icons/fi";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../store/auth-slice";
 
 const navItems = [
   { label: "Deals", path: "/shop/deals", pill: true },
@@ -29,6 +31,13 @@ const activeStyle = {
 
 function Header({ cartCount = 0 }) {
   const [cartOpen, setCartOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigate("/login");
+  };
 
   return (
     <>
@@ -118,6 +127,19 @@ function Header({ cartCount = 0 }) {
                 {cartCount}
               </span>
             )}
+          </span>
+          {/* Logout Icon */}
+          <span
+            style={{
+              marginLeft: 16,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+            }}
+            onClick={handleLogout}
+            title="Logout"
+          >
+            <FiLogOut size={22} color="#000" />
           </span>
         </div>
       </nav>

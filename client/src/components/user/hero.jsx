@@ -41,15 +41,16 @@ const Hero = () => (
     <div
       style={{
         position: "absolute",
-        width: "60vw",
+        width: "50vw",
         height: "10vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "column",
         margin: "auto auto",
-        gap: "1.5rem",
+        gap: "0.5rem",
         zIndex: 2,
+        maxHeight: "50vh",
       }}
     >
       <div
@@ -62,8 +63,7 @@ const Hero = () => (
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "1.2rem",
-          maxWidth: "90vw",
+          gap: "0.5rem",
         }}
       >
         <motion.h1
@@ -92,14 +92,15 @@ const Hero = () => (
           style={{
             fontFamily: "'Montserrat', sans-serif",
             fontWeight: 600,
-            fontSize: "2.2rem",
+            fontSize: "1.5rem",
             marginBottom: "0.2rem",
+            marginTop: "0",
             textAlign: "center",
             color: "#fff",
             textShadow: "0 2px 16px rgba(201,57,57,0.18)",
           }}
         >
-          An exclusive place for all you need
+          An exclusive place for all your needs
         </motion.h2>
         <motion.h3
           variants={textVariants}
@@ -108,7 +109,7 @@ const Hero = () => (
           style={{
             fontFamily: "'Montserrat', sans-serif",
             fontWeight: 500,
-            fontSize: "1.6rem",
+            fontSize: "1.4rem",
             marginBottom: "0.2rem",
             textAlign: "center",
             color: "#ffd580",
@@ -124,7 +125,7 @@ const Hero = () => (
           style={{
             fontFamily: "'Montserrat', sans-serif",
             fontWeight: 400,
-            fontSize: "1.25rem",
+            fontSize: "1.5rem",
             marginTop: "0.7rem",
             textAlign: "center",
             color: "#fff",
@@ -133,7 +134,7 @@ const Hero = () => (
           }}
         >
           Wander into{" "}
-          <span style={{ color: "#c93939", fontWeight: 700 }}>Vendora</span>.
+          <span style={{ color: "#c93939", fontWeight: 900 }}>Vendora.</span>
         </motion.p>
       </div>
     </div>

@@ -16,7 +16,9 @@ export default function AppRouter() {
     <>
       <Toaster position="top-right" />
       <Routes>
+
         <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/register" element={<SignUp />} />
 
         <Route path="/seller" element={<SellerLayout />}>
@@ -29,9 +31,9 @@ export default function AppRouter() {
         </Route>
 
         <Route path="/shop/deals" element={<Deals />} />
+        <Route path="/shop/checkout" element={<CheckOut />} />
         <Route path="product/:id" element={<ProductPage />} />
         <Route path="/un-auth" element={<UnAuthPage />} />
-        <Route path="/checkout" element={<CheckOut />} />
         <Route path="*" element={<UnAuthPage />} />
       </Routes>
     </>
