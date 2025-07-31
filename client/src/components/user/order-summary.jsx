@@ -1,47 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { unwrapResult } from "@reduxjs/toolkit";
-import { fetchProductById } from "../../store/product-slice";
 
-function OrderSummary() {
-  const cartItems = useSelector((state) => state.cart.items);
-  const dispatch = useDispatch();
-  const total = (itemsArray) => {
-    return itemsArray.reduce(
-      (sum, prod) => sum + prod.price * prod.quantity,
-      0
-    );
-  };
-
-  const [cartProducts, setCartProducts] = useState([]);
-
-  useEffect(() => {
-    async function fetchDetails() {
-      if (Array.isArray(cartItems) && cartItems.length > 0) {
-        const results = [];
-        for (const item of cartItems) {
-          try {
-            console.log("Fetching product for cart item:", item);
-            const productId = item.product;
-            const action = await dispatch(fetchProductById(productId));
-            const prod = unwrapResult(action);
-            results.push({
-              ...prod,
-              quantity: item.quantity,
-              size: item.size,
-            });
-          } catch (err) {
-            console.error("Error fetching product details:", err);
-          }
-        }
-        setCartProducts(results);
-      } else {
-        setCartProducts([]);
-      }
-    }
-    fetchDetails();
-  }, [cartItems, dispatch]);
-
+function OrderSummary({ total, cartProducts }) {
 
   return (
     <div
@@ -144,7 +102,7 @@ function OrderSummary() {
         }}
       >
         <span>Total</span>
-        <span>₹{total(cartProducts)}</span>
+        <span>₹{total}</span>
       </div>
     </div>
   );

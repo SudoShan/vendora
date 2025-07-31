@@ -68,7 +68,6 @@ const updateProduct = async (req, res) => {
 
 const getProds = async (req, res) => {
     try {
-        console.log('Fetching products with filters:', req.query);
         let { category, brand, minPrice, maxPrice } = req.query;
         const filters = {};
 
@@ -90,10 +89,8 @@ const getProds = async (req, res) => {
             if (minPrice) filters.price.$gte = parseFloat(minPrice);
             if (maxPrice) filters.price.$lte = parseFloat(maxPrice);
         }
-        console.log('Filters:', filters);
         // Find products matching filters
-        const products = await Product.find(filters);  
-        console.log('Products found:', products);
+        const products = await Product.find(filters);
         res.status(200).json(products);
     } catch (error) {
         console.error('Error fetching products:', error);

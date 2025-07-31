@@ -2,12 +2,10 @@ const { Cart, cartSchema } = require('../models/cart');
 
 const addToCart = async (req, res) => {
     try {
-        console.log("Adding to cart for user:", req.user.id);
         const { productId, quantity, size } = req.body;
 
         // Step 1: Find the user's cart
         let cart = await Cart.findOne({ user: req.user.id });
-        console.log("Adding to cart:", { productId, quantity, size });
         let add = []
         if(productId && quantity && size)
             add = [{ product: productId, quantity, size }];
@@ -25,12 +23,9 @@ const addToCart = async (req, res) => {
             const existingIndex = cart.products.findIndex(
                 (item) => item.product.toString() === productId
             );
-            console.log("Existing index:", existingIndex);
 
             if (existingIndex > -1) {
-                console.log("Updating existing product in cart");
                 cart.products[existingIndex].quantity = quantity;
-                console.log("Updated quantity:", cart.products[existingIndex].quantity);
                 if (typeof size === "string" && size.length > 0) {
                     cart.products[existingIndex].size = size;
                 } else {

@@ -38,6 +38,9 @@ app.use('/api/images', imageRoutes)
 const addressRoutes = require('./routes/address-routes')
 app.use('/api/addresses', addressRoutes)
 
+const orderRoutes = require('./routes/order-routes')
+app.use('/api/orders', orderRoutes)
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)
 })

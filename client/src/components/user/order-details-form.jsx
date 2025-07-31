@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { addOrder } from "../../store/order-slice"; 
 import PayPalButton from "../common/paypal-button";
 import axiosInstance from "../../utils/api";
+import { toast } from "sonner";
 
-const OrderDetailsForm = () => {
+const OrderDetailsForm = ( { total } ) => {
   const [orderName, setOrderName] = useState("");
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState("");
@@ -12,8 +16,12 @@ const OrderDetailsForm = () => {
   const [editingId, setEditingId] = useState(null);
   const [editAddress, setEditAddress] = useState("");
   const [editLabel, setEditLabel] = useState("");
-  const [checkoutId, setCheckoutId] = useState(null);
+  const [placingOrder, setPlacingOrder] = useState(false);
   const [amount] = useState(1999); 
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const cartItems = useSelector((state) => state.cart.items);
 
   // Fetch addresses from backend
   useEffect(() => {
@@ -161,8 +169,30 @@ const OrderDetailsForm = () => {
     }
   };
 
-  const handleCheckout = () => {
-    setCheckoutId("dummy-checkout-id-123");
+  const handleCheckout = async () => {
+    if (!selectedAddress) {
+      toast.error("Please select a delivery address");
+      return;
+    }
+    setPlacingOrder(true);
+    try {
+      console.log(total);
+      await dispatch(addOrder({
+        products: cartItems,
+        totalAmount: total,
+        address: selectedAddress,
+      }));
+      // Reset cart after checkout
+      // dispatch(resetCart());
+      toast.success("Order placed successfully!");
+      navigate('/shop/explore');
+    } catch (error) {
+      console.error("Error placing order:", error);
+      toast.error("Error placing order. Please try again.");
+      return;
+    } finally {
+      setPlacingOrder(false);
+    }
   };
 
   const handleSuccess = (order) => {
@@ -515,7 +545,7 @@ const OrderDetailsForm = () => {
 
       {/* Checkout / PayPal */}
       <div>
-        {!checkoutId ? (
+        {!placingOrder? (
           <button
             style={{
               width: "100%",

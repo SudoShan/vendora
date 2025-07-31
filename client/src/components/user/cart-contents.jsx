@@ -34,7 +34,6 @@ const CartContents = () => {
         const results = [];
         for (const item of cartItems) {
           try {
-            console.log("Fetching product for cart item:", item);
             const productId = item.product;
             const action = await dispatch(fetchProductById(productId));
             const prod = unwrapResult(action);
